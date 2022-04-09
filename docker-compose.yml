@@ -1,0 +1,47 @@
+version: '3.4'
+
+volumes:
+  mongo_data:
+    name: mongodb_data
+
+networks:
+  ms-network:
+    driver: bridge
+
+services:
+# MONGO Datenbank
+  mongo:
+    image : mongo
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      #MONGO_INITDB_ROOT_USERNAME: root
+      #MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: StPortalStore
+    restart: unless-stopped
+    networks:
+      - ms-network
+
+  # PROFILE-SERVICE
+  profile-service:
+    image: st-portal-app/ms-profile-dart
+    container_name: profile-service
+    build:
+      context: ./ms-profile-dart
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    depends_on:
+      - mongo
+    environment:
+      - CONTAINER_NAME=profile-service
+      - PORT=9001
+      # connection pool definition?
+      #- DB_URL=${DB_URL:mongodb://mongo:27017/studiapp_mongo_db}
+      #- DB_URL=mongodb://mongo:27017
+      #- DB_URL=${DB_URL:-r2dbc:mongodb://mongo:27017}
+    networks:
+      - ms-network
