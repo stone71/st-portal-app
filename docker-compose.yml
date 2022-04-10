@@ -39,6 +39,11 @@ services:
     environment:
       - CONTAINER_NAME=profile-service
       - PORT=9001
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      # - DB_USER=${DB_USER}
+      # - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=StPortalStore
       # connection pool definition?
       #- DB_URL=${DB_URL:mongodb://mongo:27017/studiapp_mongo_db}
       #- DB_URL=mongodb://mongo:27017
