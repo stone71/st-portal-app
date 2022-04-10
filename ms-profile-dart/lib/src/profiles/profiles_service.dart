@@ -1,15 +1,13 @@
-import 'profiles/model/profile.dart';
+import 'model/profile.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-const dbName = 'StPortalStore';
-const dbAddress = 'mongo';
-//const dbAddress = '127.0.0.1';
-const defaultUri = 'mongodb://$dbAddress:27017/$dbName';
-
 class ProfilesService {
+  final Db db;
+
+  ProfilesService({required this.db});
+
   Future<Profile?> createProfile(Profile profile) async {
-    var db = Db(defaultUri);
-    await db.open();
+    openDatabase(db);
 
     var collectionName = 'profiles';
     var collection = db.collection(collectionName);
@@ -23,8 +21,7 @@ class ProfilesService {
   }
 
   Future<Profile?> updateProfile(Profile profile) async {
-    var db = Db(defaultUri);
-    await db.open();
+    openDatabase(db);
 
     var collectionName = 'profiles';
     var collection = db.collection(collectionName);
@@ -43,8 +40,7 @@ class ProfilesService {
   }
 
   Future<List<Profile>> getProfiles() async {
-    var db = Db(defaultUri);
-    await db.open();
+    openDatabase(db);
 
     var collectionName = 'profiles';
     var collection = db.collection(collectionName);
@@ -61,8 +57,7 @@ class ProfilesService {
   }
 
   Future<Profile?> getProfileById(String id) async {
-    var db = Db(defaultUri);
-    await db.open();
+    openDatabase(db);
 
     var collectionName = 'profiles';
     var collection = db.collection(collectionName);
@@ -79,8 +74,7 @@ class ProfilesService {
   }
 
   Future<Profile?> deleteProfileById(String id) async {
-    var db = Db(defaultUri);
-    await db.open();
+    openDatabase(db);
 
     var collectionName = 'profiles';
     var collection = db.collection(collectionName);
@@ -91,6 +85,10 @@ class ProfilesService {
 
     print(result);
     return null;
+  }
+
+  Future openDatabase(Db db) async {
+    await db.open();
   }
 
   Future closeDatabase(Db db) async {

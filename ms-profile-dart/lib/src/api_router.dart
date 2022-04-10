@@ -1,7 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'profiles_router.dart';
+import 'profiles/profiles_router.dart';
 
 class ApiRouter {
   final ProfilesRouter profilesRouter;

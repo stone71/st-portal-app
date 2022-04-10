@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import 'profiles/model/profile.dart';
+import 'model/profile.dart';
 import 'profiles_service.dart';
 
 
 class ProfilesRouter {
-  final ProfilesService profilesService = ProfilesService();
-  ProfilesRouter();
+  final ProfilesService profilesService;
+  ProfilesRouter({required this.profilesService});
 
   Future<Response>  _getProfilesHandler(Request req) async {
     final id = req.params['id'];
@@ -57,8 +57,8 @@ class ProfilesRouter {
 // Configure routes.
   Handler get router {
     final router = Router();
-    router.get('/profiles', _getProfilesHandler);
-    router.get('/profiles/<id>', _getProfilesByIdHandler);
+    router.get('/profiles', Pipeline().addHandler(_getProfilesHandler));
+    router.get('/profiles/<id>', Pipeline().addHandler(_getProfilesByIdHandler));
     router.delete('/profiles/<id>', Pipeline().addHandler(_deleteProfilesByIdHandler));
     router.post('/profiles', Pipeline().addHandler(_createProfilesHandler));
     router.put('/profiles',
