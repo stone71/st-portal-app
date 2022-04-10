@@ -12,7 +12,6 @@ class ProfilesRouter {
   ProfilesRouter({required this.profilesService});
 
   Future<Response>  _getProfilesHandler(Request req) async {
-    final id = req.params['id'];
     final profiles = await profilesService.getProfiles();
 
     return Response.ok(jsonEncode(profiles));
